@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block 'mainbody' %}
+{% load socialaccount %}
+ 
+
+<div class=" ">
+  <center>
+    {% if message %}
+    <h4 class="green-text">{{message}}</h4>
+    {% endif %}
+
+    {% if error %}
+    <h4 class="red-text">{{error}}</h4>
+    {% endif %}
+
+
+  </center>
+ 
+<center>
+  <h3>My Dashboard</h3>
+</center>
+
+  
+<div class="row" style="height:100%">
+  <div class="col s12 m12 l4">
+    <div style="margin:20px 10px;padding:10px;height:500px" class="grey lighten-3">
+      {% if user.is_authenticated %}
+      <p>Welcome, {{ user.username }} !</p> 
+      {% endif %}
+    </div>
+  </div>
+  <div class="col s12 m12 l8">
+    <div style="margin:20px 10px;padding:10px;height:500px" class="grey lighten-3">
+      {% if user.is_authenticated %}
+      <p>Welcome, {{ user.username }} !</p> 
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+
+
+
+</div> 
+
+{% endblock 'mainbody' %}
+{% block 'js' %}
+{% endblock 'js' %}

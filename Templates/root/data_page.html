@@ -1,0 +1,135 @@
+{% extends 'partials/root/admin_engine.html' %}
+{% block 'engine'%}
+<style>
+  .input-field.input-outlined > input {
+    border: 2px solid #eee; 
+    padding:0px 0px 0px 1vw;
+    width: 95%;
+    float: none;
+    display: block;
+    border-radius: 4px;
+    transition: box-shadow, border-color 0.15s; 
+  }
+  .input-field.input-outlined > input:focus:not([readonly]) {
+    border-color: #26A69B;
+    box-shadow: 0 1px 0 0px #26A69B;
+  }
+  .input-field.input-outlined > label {
+    left: 0.5rem;
+    display: inline-flex;
+    width: auto !important;
+  }
+  .input-field.input-outlined > label.active {
+    background: white;
+    border-left: 4px solid white;
+    border-right: 4px solid white;
+    transform: translateY(-1.75rem);
+    top: 1rem;
+  }
+</style>
+ <br>
+<div class="row"> 
+  <div class="col m10 l10 s12">
+   
+  <label>Select Username</label>
+  <select class="browser-default" id="username">
+    <option value="" disabled selected>Choose Username</option>
+    {% for username in user_names  %}
+    <option value="{{username}}">{{username}}</option>
+      
+    {% endfor %} 
+  </select>
+            
+  </div>
+
+  <div class="col m2 l2 s12">
+    <div class="input-field input-outlined" id="search_btn"> 
+        <a class="waves-effect waves-light btn" style="width:100%;height:3rem;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+          <span><i class="material-icons left">search</i>Search</span>
+        </a> 
+    </div>  
+  </div> 
+</div>
+ 
+
+
+
+
+<center id="preloader" style="display: none;"> 
+  <br><br><br><br><br><br> 
+  <div class="preloader-wrapper big active">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+      <div class="circle"></div>
+    </div><div class="circle-clipper right">
+      <div class="circle"></div>
+    </div>
+  </div>
+</div> 
+</center>
+
+
+<div style="margin:0px 2%" >
+  <table class='striped highlight responsive-table' id="data_table" style="display: none;">
+    <thead>
+      <tr>
+          <th>No.</th>
+          <th>Tweet</th>
+          <th>Date</th>
+          <th>Likes</th> 
+          <th>Retweets</th>
+      </tr>
+    </thead>
+    <tbody id="table_body">  
+    </tbody>
+  </table>
+</div>
+
+
+ 
+
+
+
+
+
+
+<script>
+$('#search_btn').click(function(e){
+  $('#data_table').hide()
+  $('#preloader').show()
+  e.preventDefault()
+  var username= $('#username').val()
+  if($.trim(username).length !== 0){ 
+    $.ajax({
+      url: "/dashboard/fetch_data_tweets_ajax", 
+      data: {"username":username},
+      success: function(results){
+        var data = results.data
+        $('#data_table').show()
+        $('#table_body').html('')
+        for(var x=0;x<data.length;x++){
+          $('#table_body').append(` 
+              <tr>
+                <th>${x+1}</th>
+                <th>${data[x].text}</th>
+                <th>${data[x].created_at}</th> 
+                <th>${data[x].like_count}</th>  
+                <th>${data[x].retweet_count}</th> 
+            </tr>  
+          `)
+        }
+        $('#preloader').hide()
+      }
+    }); 
+  }else{
+    alert("Please insert any username")
+  }
+
+})
+</script>
+
+
+ 
+{% endblock 'engine' %}
