@@ -11,6 +11,7 @@ urlpatterns = [
     
     path('data_page/', data_page, name='data_page'),
     path('fetch_data_tweets_ajax/', fetch_data_tweets_ajax, name='fetch_data_tweets_ajax'),
+    path('import_tweets_to_other_db/', import_tweets_to_other_db, name='import_tweets_to_other_db'),
      
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

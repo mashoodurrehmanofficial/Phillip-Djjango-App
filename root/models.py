@@ -9,13 +9,26 @@ from datetime import datetime
  
  
 class Tweet_Table(models.Model):
+    username            = models.CharField(max_length=10000,blank=True,default='') 
+    profile_image_url   = models.CharField(max_length=10000,blank=True,default='') 
+    text                = models.CharField(max_length=10000,blank=True,default='') 
+    created_at          = models.DateField(blank=True,null=True)  
+    retweet_count       = models.IntegerField(default=0, blank=True,null=True)  
+    like_count          = models.IntegerField(default=0, blank=True,null=True) 
+    imported            = models.BooleanField(default=False) 
+    user                = models.ForeignKey(User,on_delete=models.CASCADE, blank=True,null=True)
+    def __str__(self):
+        return self.username
+ 
+ 
+class Imported_Tweet_Table(models.Model):
     username        = models.CharField(max_length=10000,blank=True,default='') 
     text            = models.CharField(max_length=10000,blank=True,default='') 
     created_at      = models.DateField(blank=True,null=True)  
-    retweet_count   = models.IntegerField(default=0, blank=True,null=True) 
-    # reply_count     = models.IntegerField(default=0, blank=True,null=True) 
+    retweet_count   = models.IntegerField(default=0, blank=True,null=True)  
     like_count      = models.IntegerField(default=0, blank=True,null=True) 
-    # quote_count     = models.IntegerField(default=0, blank=True,null=True) 
-    
+    imported        = models.BooleanField(default=False) 
+    user            = models.ForeignKey(User,on_delete=models.CASCADE, blank=True,null=True)
     def __str__(self):
         return self.username
+ 

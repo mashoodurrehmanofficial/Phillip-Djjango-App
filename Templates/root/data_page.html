@@ -43,7 +43,7 @@
   </div>
 
   <div class="col m2 l2 s12">
-    <div class="input-field input-outlined" id="search_btn"> 
+    <div class="input-field input-outlined" id="search_btn" style="padding-top: 6px !important;">  
         <a class="waves-effect waves-light btn" style="width:100%;height:3rem;display: flex;flex-direction: column;justify-content: center;align-items: center;">
           <span><i class="material-icons left">search</i>Search</span>
         </a> 
@@ -71,6 +71,19 @@
 </center>
 
 
+
+<div class="input-field input-outlined right" id="import_btn" style="margin-right: 1%;display: none  "> 
+  <a class="waves-effect waves-light btn" style="width:150px; height:3rem;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+    <span><i class="material-icons left">file_download</i>Import </span>
+  </a> 
+</div>  
+
+
+
+
+
+
+
 <div style="margin:0px 2%" >
   <table class='striped highlight responsive-table' id="data_table" style="display: none;">
     <thead>
@@ -96,8 +109,63 @@
 
 
 <script>
+
+  $('#import_btn').click(function(){
+    var selected = [];
+    $('input:checked').each(function() {
+        selected.push(this.id);
+    });
+  
+    $.ajax({
+      url:'/dashboard/import_tweets_to_other_db/',
+      data: {'ids':JSON.stringify(selected)},
+      method: "GET",
+      success:function(res){
+        Render_Table(res.data)
+        
+      }
+    })
+  
+  })
+
+function Render_Table(data){
+  $('#data_table').show()
+        $('#table_body').html('')
+        for(var x=0;x<data.length;x++){
+          var status = data[x].imported 
+          if(!status){
+            status="enabled"
+          }else{
+            status="disabled"
+          }
+          $('#table_body').append(` 
+              <tr>
+                <th> 
+                  <label>
+                    <input type="checkbox"   id=${data[x].id} class="tweet_selection"  ${status}/>
+                    <span></span>
+                  </label>
+                </th>
+                <th>${x+1}</th>
+                <th>${data[x].text}</th>
+                <th>${data[x].created_at}</th> 
+                <th>${data[x].like_count}</th>  
+                <th>${data[x].retweet_count}</th> 
+            </tr>  
+          `)
+        }
+        $('.tweet_selection').click(function(){ 
+        });
+        $('#preloader').hide()
+        $('#import_btn').show()
+}
+
+
+
+
 $('#search_btn').click(function(e){
   $('#data_table').hide()
+  $('#import_btn').hide()
   $('#preloader').show()
   e.preventDefault()
   var username= $('#username').val()
@@ -107,20 +175,7 @@ $('#search_btn').click(function(e){
       data: {"username":username},
       success: function(results){
         var data = results.data
-        $('#data_table').show()
-        $('#table_body').html('')
-        for(var x=0;x<data.length;x++){
-          $('#table_body').append(` 
-              <tr>
-                <th>${x+1}</th>
-                <th>${data[x].text}</th>
-                <th>${data[x].created_at}</th> 
-                <th>${data[x].like_count}</th>  
-                <th>${data[x].retweet_count}</th> 
-            </tr>  
-          `)
-        }
-        $('#preloader').hide()
+        Render_Table(data)
       }
     }); 
   }else{

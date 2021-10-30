@@ -99,10 +99,20 @@ WSGI_APPLICATION = 'PROJECT.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': { 
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
+        
+        
+    }, 
+    
 }
 
 
@@ -185,10 +195,8 @@ ACCOUNT_LOGOUT_ON_GET =True
 
 
 
-# 879545715675-dnu6nf0mbu8pus5ktjol8s2ou9pp1l3j.apps.googleusercontent.com
-# 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
+# GOOGLE Creds
+# Client ID     = 879545715675-dnu6nf0mbu8pus5ktjol8s2ou9pp1l3j.apps.googleusercontent.com
+# Secret_Key    = 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
 
-
-
-# 883372555886295
-# 29c4ad88ea0d8fe3c2e6aba3bb6a6ed0
+ 

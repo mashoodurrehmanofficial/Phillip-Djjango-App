@@ -20,7 +20,14 @@ def get_all_tweets(screen_name):
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth) 
-    alltweets = []   
+    alltweets = []  
+    
+    profile_image_url  = api.get_user(screen_name=screen_name).profile_image_url_https
+     
+
+    
+    
+    
     new_tweets = api.user_timeline(screen_name = screen_name,count=200) 
     alltweets.extend(new_tweets) 
     oldest = alltweets[-1].id - 1
@@ -49,11 +56,14 @@ def get_all_tweets(screen_name):
               },
         )
   
-    return main_container    
+    return {
+            "main_container":main_container,
+            "profile_image_url":profile_image_url
+        }    
 
 if __name__ == '__main__':
     main_container = get_all_tweets("upasanakonidela")
-    print(main_container)
+    # print(main_container[0])
 
 
 
